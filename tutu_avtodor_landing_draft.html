@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Поехали в путешествие на машине</title>
+  <style>
+    :root {
+      --page-width: 1180px;
+      --border: 1px solid #000;
+      --radius: 20px;
+      --space-xl: 96px;
+      --space-lg: 64px;
+      --space-md: 32px;
+      --space-sm: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #000;
+      background: #fff;
+      line-height: 1.45;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 24px;
+      border: var(--border);
+      border-radius: 999px;
+      background: #fff;
+      color: #000;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button--wide {
+      width: 100%;
+    }
+
+    .page {
+      overflow: hidden;
+    }
+
+    .container {
+      width: min(calc(100% - 40px), var(--page-width));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: var(--space-xl) 0;
+      border-top: var(--border);
+    }
+
+    .section:first-of-type {
+      border-top: 0;
+    }
+
+    .section__header {
+      max-width: 760px;
+      margin-bottom: 40px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin-bottom: 24px;
+      font-size: clamp(44px, 7vw, 88px);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      margin-bottom: 12px;
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .lead {
+      max-width: 900px;
+      margin-bottom: 32px;
+      font-size: clamp(19px, 2.2vw, 28px);
+    }
+
+    .hero {
+      min-height: 82vh;
+      display: flex;
+      align-items: center;
+      padding: 72px 0;
+      border-bottom: var(--border);
+    }
+
+    .hero__inner {
+      width: 100%;
+    }
+
+    .hero__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .tag {
+      padding: 10px 14px;
+      border: var(--border);
+      border-radius: 999px;
+      font-size: 14px;
+    }
+
+    .route-groups {
+      display: grid;
+      gap: 48px;
+    }
+
+    .route-group__title {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      display: flex;
+      min-height: 100%;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .card__media {
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+      border-bottom: var(--border);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    .card__description {
+      margin-bottom: 20px;
+    }
+
+    .card__meta {
+      display: grid;
+      gap: 8px;
+      margin: 0 0 28px;
+      padding: 0;
+      list-style: none;
+      font-size: 15px;
+    }
+
+    .card__footer {
+      margin-top: auto;
+    }
+
+    .route-detail {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .route-detail__main,
+    .route-detail__aside {
+      display: grid;
+      gap: 24px;
+    }
+
+    .panel {
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .map-placeholder {
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .fact {
+      border: var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .fact strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 20px;
+    }
+
+    .places {
+      display: grid;
+      gap: 16px;
+    }
+
+    .place {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 20px;
+      align-items: start;
+      padding: 16px 0;
+      border-top: var(--border);
+    }
+
+    .place:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .place__media {
+      min-height: 110px;
+      display: grid;
+      place-items: center;
+      border: var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .service-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .service-card {
+      border: var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .budget-list {
+      display: grid;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .budget-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 12px;
+      border-bottom: var(--border);
+    }
+
+    .budget-row--total {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .gift-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .promo-code {
+      display: inline-block;
+      margin: 8px 0 20px;
+      padding: 10px 14px;
+      border: 1px dashed #000;
+      font-family: "Courier New", monospace;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .final-cta {
+      text-align: center;
+    }
+
+    .final-cta .lead {
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .footer {
+      padding: 28px 0;
+      border-top: var(--border);
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      :root {
+        --space-xl: 72px;
+      }
+
+      .card-grid,
+      .gift-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .route-detail {
+        grid-template-columns: 1fr;
+      }
+
+      .facts {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(calc(100% - 24px), var(--page-width));
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 56px 0;
+      }
+
+      .card-grid,
+      .gift-grid,
+      .facts {
+        grid-template-columns: 1fr;
+      }
+
+      .place {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 56px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header class="hero">
+      <div class="container hero__inner">
+        <p class="eyebrow">Туту × Автодор</p>
+        <h1>Поехали в путешествие на машине</h1>
+        <p class="lead">
+          Готовые маршруты по самым интересным направлениям вдоль платных трасс.
+          Мы уже собрали всё необходимое для поездки: идеи маршрутов, рекомендации,
+          подборку отелей, специальные условия на транспондер и возможность
+          арендовать автомобиль.
+        </p>
+        <a class="button" href="#routes">Выбрать маршрут</a>
+
+        <div class="hero__meta" aria-label="Преимущества">
+          <span class="tag">Готовые маршруты</span>
+          <span class="tag">Отели</span>
+          <span class="tag">Аренда авто</span>
+          <span class="tag">Транспондер</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section" id="routes">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">Маршруты</p>
+            <h2>Выберите формат путешествия</h2>
+            <p>Подборки ниже можно заменить на финальные маршруты после согласования с Автодором.</p>
+          </div>
+
+          <div class="route-groups">
+            <section class="route-group">
+              <h3 class="route-group__title">Идеально на выходные</h3>
+              <div class="card-grid">
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Суздаль</h3>
+                    <p class="card__description">Старинный город, гастрономия и прогулки на два дня.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: 220 км</li>
+                      <li>Время в пути: около 3 часов</li>
+                      <li>Трасса: М-12</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Тверь</h3>
+                    <p class="card__description">Короткая поездка с прогулками, музеями и набережной.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: ХХХ км</li>
+                      <li>Время в пути: около Х часов</li>
+                      <li>Трасса: М-11</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Коломна</h3>
+                    <p class="card__description">Архитектура, пастила и спокойный маршрут выходного дня.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: ХХХ км</li>
+                      <li>Время в пути: около Х часов</li>
+                      <li>Трасса: уточнить</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="route-group">
+              <h3 class="route-group__title">На несколько дней</h3>
+              <div class="card-grid">
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Санкт-Петербург</h3>
+                    <p class="card__description">Большое автопутешествие с остановками по пути.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: ХХХ км</li>
+                      <li>Время в пути: около Х часов</li>
+                      <li>Трасса: М-11</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Нижний Новгород</h3>
+                    <p class="card__description">Исторический центр, Волга и насыщенная программа.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: ХХХ км</li>
+                      <li>Время в пути: около Х часов</li>
+                      <li>Трасса: М-12</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Казань</h3>
+                    <p class="card__description">Длинный маршрут с остановками и готовым планом поездки.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: ХХХ км</li>
+                      <li>Время в пути: около Х часов</li>
+                      <li>Трасса: М-12</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="route-group">
+              <h3 class="route-group__title">К морю</h3>
+              <div class="card-grid">
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Ростов-на-Дону</h3>
+                    <p class="card__description">Промежуточная точка большого южного путешествия.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: ХХХ км</li>
+                      <li>Время в пути: около Х часов</li>
+                      <li>Трасса: М-4</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Краснодар</h3>
+                    <p class="card__description">Маршрут на юг с остановками и ночёвкой по пути.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: ХХХ км</li>
+                      <li>Время в пути: около Х часов</li>
+                      <li>Трасса: М-4</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card__media">Фото маршрута</div>
+                  <div class="card__body">
+                    <h3>Москва → Геленджик</h3>
+                    <p class="card__description">Полноценный отпускной маршрут с полезными остановками.</p>
+                    <ul class="card__meta">
+                      <li>Расстояние: ХХХ км</li>
+                      <li>Время в пути: около Х часов</li>
+                      <li>Трасса: М-4</li>
+                      <li>Платная дорога: от ХХХ ₽</li>
+                    </ul>
+                    <div class="card__footer">
+                      <a class="button button--wide" href="#route-example">Подробнее</a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="route-example">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">Пример страницы маршрута</p>
+            <h2>Москва → Суздаль</h2>
+            <p>Ниже показана структура одного маршрута. Для каждого направления можно использовать тот же шаблон.</p>
+          </div>
+
+          <div class="route-detail">
+            <div class="route-detail__main">
+              <div class="map-placeholder">Интерактивная карта маршрута</div>
+
+              <div class="panel">
+                <h3>О маршруте</h3>
+                <p>
+                  Короткое описание поездки: чем интересно направление, сколько дней заложить
+                  и какие остановки можно сделать по пути.
+                </p>
+
+                <div class="facts">
+                  <div class="fact">Расстояние<strong>220 км</strong></div>
+                  <div class="fact">Время в пути<strong>~3 часа</strong></div>
+                  <div class="fact">Продолжительность<strong>2 дня</strong></div>
+                  <div class="fact">Трасса<strong>М-12</strong></div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h3>Что посмотреть</h3>
+                <div class="places">
+                  <article class="place">
+                    <div class="place__media">Фото точки</div>
+                    <div>
+                      <h3>Точка маршрута №1</h3>
+                      <p>Краткое описание достопримечательности и совет по посещению.</p>
+                    </div>
+                  </article>
+
+                  <article class="place">
+                    <div class="place__media">Фото точки</div>
+                    <div>
+                      <h3>Точка маршрута №2</h3>
+                      <p>Краткое описание достопримечательности и совет по посещению.</p>
+                    </div>
+                  </article>
+
+                  <article class="place">
+                    <div class="place__media">Фото точки</div>
+                    <div>
+                      <h3>Точка маршрута №3</h3>
+                      <p>Краткое описание достопримечательности и совет по посещению.</p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h3>Где остановиться</h3>
+                <p>Подборка отелей на Туту рядом с основными точками маршрута.</p>
+
+                <div class="card-grid">
+                  <article class="card">
+                    <div class="card__media">Фото отеля</div>
+                    <div class="card__body">
+                      <h3>Отель №1</h3>
+                      <ul class="card__meta">
+                        <li>Рейтинг: Х,Х</li>
+                        <li>Цена: от ХХХ ₽</li>
+                      </ul>
+                      <div class="card__footer">
+                        <a class="button button--wide" href="#">Забронировать</a>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="card">
+                    <div class="card__media">Фото отеля</div>
+                    <div class="card__body">
+                      <h3>Отель №2</h3>
+                      <ul class="card__meta">
+                        <li>Рейтинг: Х,Х</li>
+                        <li>Цена: от ХХХ ₽</li>
+                      </ul>
+                      <div class="card__footer">
+                        <a class="button button--wide" href="#">Забронировать</a>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="card">
+                    <div class="card__media">Фото отеля</div>
+                    <div class="card__body">
+                      <h3>Отель №3</h3>
+                      <ul class="card__meta">
+                        <li>Рейтинг: Х,Х</li>
+                        <li>Цена: от ХХХ ₽</li>
+                      </ul>
+                      <div class="card__footer">
+                        <a class="button button--wide" href="#">Забронировать</a>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <aside class="route-detail__aside">
+              <div class="panel">
+                <h3>Полезно в дороге</h3>
+
+                <div class="service-list">
+                  <article class="service-card">
+                    <h3>Платные дороги</h3>
+                    <p>Стоимость проезда, преимущества транспондера и специальное предложение.</p>
+                    <a class="button button--wide" href="#">Получить транспондер</a>
+                  </article>
+
+                  <article class="service-card">
+                    <h3>Нет автомобиля?</h3>
+                    <p>Подберите подходящую машину на даты поездки.</p>
+                    <a class="button button--wide" href="#">Арендовать автомобиль</a>
+                  </article>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h3>Примерный бюджет</h3>
+                <div class="budget-list">
+                  <div class="budget-row"><span>Топливо</span><strong>от 3 000 ₽</strong></div>
+                  <div class="budget-row"><span>Платные дороги</span><strong>от 1 200 ₽</strong></div>
+                  <div class="budget-row"><span>Отель</span><strong>от 7 000 ₽</strong></div>
+                  <div class="budget-row budget-row--total"><span>Итого</span><strong>от 11 200 ₽</strong></div>
+                </div>
+                <p>С транспондером поездка может стать выгоднее.</p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">Продолжить путешествие</p>
+            <h2>Другие маршруты рядом</h2>
+          </div>
+
+          <div class="card-grid">
+            <article class="card">
+              <div class="card__media">Фото направления</div>
+              <div class="card__body">
+                <h3>Владимир</h3>
+                <p class="card__description">Короткое описание похожего маршрута.</p>
+                <div class="card__footer">
+                  <a class="button button--wide" href="#">Подробнее</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__media">Фото направления</div>
+              <div class="card__body">
+                <h3>Плёс</h3>
+                <p class="card__description">Короткое описание похожего маршрута.</p>
+                <div class="card__footer">
+                  <a class="button button--wide" href="#">Подробнее</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__media">Фото направления</div>
+              <div class="card__body">
+                <h3>Ярославль</h3>
+                <p class="card__description">Короткое описание похожего маршрута.</p>
+                <div class="card__footer">
+                  <a class="button button--wide" href="#">Подробнее</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="gifts">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">Подарки для путешествия</p>
+            <h2>Вы почти готовы к поездке</h2>
+            <p>Заберите специальные предложения от Туту и Автодора.</p>
+          </div>
+
+          <div class="gift-grid">
+            <article class="card">
+              <div class="card__body">
+                <h3>Скидка на отели</h3>
+                <p>Промокод на бронирование отелей на Туту.</p>
+                <span class="promo-code">HOTELXXXX</span>
+                <p>Условия предложения и срок действия.</p>
+                <div class="card__footer">
+                  <a class="button button--wide" href="#">Забронировать отель</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__body">
+                <h3>Скидка на аренду авто</h3>
+                <p>Промокод на автомобиль для поездки.</p>
+                <span class="promo-code">CARXXXX</span>
+                <p>Условия предложения и срок действия.</p>
+                <div class="card__footer">
+                  <a class="button button--wide" href="#">Выбрать автомобиль</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__body">
+                <h3>Спецусловия на транспондер</h3>
+                <p>Скидка, бонус или другое предложение от Автодора.</p>
+                <span class="promo-code">ROADXXXX</span>
+                <p>Условия предложения и срок действия.</p>
+                <div class="card__footer">
+                  <a class="button button--wide" href="#">Оформить транспондер</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section final-cta">
+        <div class="container">
+          <h2>Маршрут уже готов</h2>
+          <p class="lead">Осталось выбрать даты, забронировать всё необходимое и отправиться в дорогу.</p>
+          <a class="button" href="#routes">Выбрать путешествие</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        Туту × Автодор. Драфтовая версия лендинга без фирменных цветов.
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
